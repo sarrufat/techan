@@ -49,3 +49,9 @@ func (tr *TradingRecord) Operate(order Order) {
 		tr.currentPosition.Enter(order)
 	}
 }
+
+type ITradingRecord interface {
+	CurrentPosition() *Position
+	LastTrade() *Position
+	Operate(order Order)
+}

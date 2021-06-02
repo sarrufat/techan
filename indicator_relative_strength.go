@@ -44,13 +44,13 @@ func NewRelativeStrengthIndicator(indicator Indicator, timeframe int) Indicator 
 	}
 }
 
-func (rs relativeStrengthIndicator) Calculate(index int) big.Decimal {
-	if index < rs.window-1 {
+func (rsi relativeStrengthIndicator) Calculate(index int) big.Decimal {
+	if index < rsi.window-1 {
 		return big.ZERO
 	}
 
-	avgGain := rs.avgGain.Calculate(index)
-	avgLoss := rs.avgLoss.Calculate(index)
+	avgGain := rsi.avgGain.Calculate(index)
+	avgLoss := rsi.avgLoss.Calculate(index)
 
 	if avgLoss.EQ(big.ZERO) {
 		return big.NewDecimal(math.Inf(1))
