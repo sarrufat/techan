@@ -48,4 +48,33 @@ func TestStopLossRule(t *testing.T) {
 
 		assert.False(t, slr.IsSatisfied(1, record))
 	})
+
+	t.Run("Returns true when gains exceed tolerance", func(t *testing.T) {
+		record := NewTradingRecord()
+		record.Operate(Order{
+			Side:   BUY,
+			Amount: big.NewFromString("10"),
+			Price:  big.ONE,
+		})
+
+		series := mockTimeSeriesFl(10, 11.5) // Gain  15%
+
+		slr := NewStopGainRule(series, 0.05)
+
+		assert.True(t, slr.IsSatisfied(1, record))
+	})
+	t.Run("Returns false when gains below tolerance", func(t *testing.T) {
+		record := NewTradingRecord()
+		record.Operate(Order{
+			Side:   BUY,
+			Amount: big.NewFromString("10"),
+			Price:  big.ONE,
+		})
+
+		series := mockTimeSeriesFl(10, 11) // Gain  15%
+
+		slr := NewStopGainRule(series, 0.15)
+
+		assert.False(t, slr.IsSatisfied(1, record))
+	})
 }
